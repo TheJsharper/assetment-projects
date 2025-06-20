@@ -13,7 +13,7 @@ const router = (configuration: Configuration): Router => {
   });
   dummyController = new DummyController(configuration); // You can make the controller a const if it doesn't need the configuration
   expressRouter.post(
-    "/",validVatValidator(configuration.postSchema.getVatValidValidation()),
+    "/valid-vat/",validVatValidator(configuration.postSchema.getVatValidValidation()),
     async (req, res, next) => {
       try {
         const handler = await dummyController.postRequestHandler();

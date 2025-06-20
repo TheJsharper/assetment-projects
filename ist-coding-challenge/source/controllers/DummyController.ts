@@ -11,10 +11,13 @@ export default class DummyController {
   async postRequestHandler(): Promise<RequestHandler> {
 
     return (req, res, next) => {
-      res.json({
+      /*res.json({
         ok: true,
         mgs: "Hello World from POSt"
-      });
+      });*/
+      res.json({
+        ...req.body
+      })
       next();
     };
 
