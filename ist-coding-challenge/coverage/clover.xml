@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1750424931599" clover="3.2.0">
-  <project timestamp="1750424931599" name="All files">
-    <metrics statements="133" coveredstatements="115" conditionals="18" coveredconditionals="14" methods="42" coveredmethods="35" elements="193" coveredelements="164" complexity="0" loc="133" ncloc="133" packages="7" files="11" classes="11"/>
+<coverage generated="1750430795611" clover="3.2.0">
+  <project timestamp="1750430795611" name="All files">
+    <metrics statements="143" coveredstatements="122" conditionals="20" coveredconditionals="14" methods="41" coveredmethods="35" elements="204" coveredelements="171" complexity="0" loc="143" ncloc="143" packages="7" files="11" classes="11"/>
     <package name="source">
       <metrics statements="28" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="6"/>
       <file name="server.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\server.ts">
@@ -37,16 +37,22 @@
       </file>
     </package>
     <package name="source.controllers">
-      <metrics statements="7" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
+      <metrics statements="13" coveredstatements="8" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="3"/>
       <file name="DummyController.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\controllers\DummyController.ts">
-        <metrics statements="7" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
+        <metrics statements="13" coveredstatements="8" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
       </file>
     </package>
     <package name="source.middlewares">
@@ -66,13 +72,15 @@
       </file>
     </package>
     <package name="source.models">
-      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="ConfigurationModel.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\models\ConfigurationModel.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="38" count="4" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
       </file>
     </package>
     <package name="source.routers">
@@ -95,22 +103,23 @@
       </file>
     </package>
     <package name="source.services">
-      <metrics statements="68" coveredstatements="64" conditionals="16" coveredconditionals="13" methods="22" coveredmethods="19"/>
+      <metrics statements="70" coveredstatements="66" conditionals="16" coveredconditionals="13" methods="22" coveredmethods="19"/>
       <file name="file.service.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\services\file.service.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
-        <line num="1" count="2" type="stmt"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="18" count="8" type="stmt"/>
-        <line num="19" count="8" type="stmt"/>
-        <line num="20" count="8" type="cond" truecount="2" falsecount="0"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="23" count="7" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="30" count="7" type="stmt"/>
-        <line num="31" count="6" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
+        <metrics statements="14" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="22" count="9" type="stmt"/>
+        <line num="23" count="9" type="stmt"/>
+        <line num="24" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="8" type="stmt"/>
+        <line num="33" count="8" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="7" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
       </file>
       <file name="validation-external-fetch.service.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\services\validation-external-fetch.service.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -159,25 +168,26 @@
         <line num="35" count="0" type="stmt"/>
       </file>
       <file name="validation.service.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\services\validation.service.ts">
-        <metrics statements="18" coveredstatements="18" conditionals="10" coveredconditionals="10" methods="3" coveredmethods="3"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="14" count="13" type="stmt"/>
-        <line num="20" count="12" type="cond" truecount="3" falsecount="0"/>
+        <metrics statements="19" coveredstatements="19" conditionals="10" coveredconditionals="10" methods="3" coveredmethods="3"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="14" count="17" type="stmt"/>
+        <line num="20" count="13" type="cond" truecount="3" falsecount="0"/>
         <line num="21" count="2" type="stmt"/>
-        <line num="24" count="10" type="cond" truecount="1" falsecount="0"/>
+        <line num="24" count="11" type="cond" truecount="1" falsecount="0"/>
         <line num="25" count="2" type="stmt"/>
-        <line num="28" count="8" type="stmt"/>
-        <line num="30" count="7" type="cond" truecount="3" falsecount="0"/>
+        <line num="28" count="9" type="stmt"/>
+        <line num="30" count="8" type="cond" truecount="3" falsecount="0"/>
         <line num="31" count="1" type="stmt"/>
-        <line num="34" count="6" type="cond" truecount="1" falsecount="0"/>
+        <line num="34" count="7" type="cond" truecount="1" falsecount="0"/>
         <line num="35" count="1" type="stmt"/>
-        <line num="38" count="51" type="stmt"/>
-        <line num="40" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="38" count="58" type="stmt"/>
+        <line num="40" count="6" type="cond" truecount="1" falsecount="0"/>
         <line num="41" count="1" type="stmt"/>
-        <line num="44" count="4" type="stmt"/>
-        <line num="46" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="47" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="46" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
       </file>
     </package>
     <package name="source.validations">

@@ -1,5 +1,6 @@
 import { readFile } from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 
 export interface Country {
@@ -10,10 +11,13 @@ export interface Country {
 
 export class FileService {
 
-    public static readonly  path = path.join(__dirname, '../../resources/countries-regex-list.json');
+    //public static readonly __filename = fileURLToPath(import.meta.url);
+    public static readonly __dirname =  path.resolve()//dirname(FileService.__filename);
 
-   
-    
+    public static readonly path = path.join(path.resolve(), '/resources/countries-regex-list.json');
+
+
+
     public async readCountries(filePath: string): Promise<string> {
         return new Promise((resolve, reject) => {
             readFile(filePath, 'utf8', (err: any, data: string) => {
@@ -24,7 +28,7 @@ export class FileService {
                 }
             });
         });
-    }    
+    }
     public async lodCountries(): Promise<Country[]> {
         try {
             const data = await this.readCountries(FileService.path);

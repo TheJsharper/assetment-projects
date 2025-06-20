@@ -43,8 +43,11 @@ export class ValidationService {
 
         const result = new RegExp(`${found.regex}`, 'g').test(requestValidation.vat);
 
-        if (!result)
+        if (!result){
+            console.log("=======>", result, requestValidation)
             return Promise.reject(new Error(`Invalid VAT number: ${requestValidation.vat} for country code: ${requestValidation.countryCode}`));
+           // return  Promise.resolve({validated:false, details:`Invalid VAT number: ${requestValidation.vat} for country code: ${requestValidation.countryCode}`});
+        }
 
 
         return Promise.resolve({ validated: true, details: "VAT number is valid for the given country code." });

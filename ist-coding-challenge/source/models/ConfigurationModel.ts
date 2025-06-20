@@ -1,5 +1,10 @@
 import { Server } from "http";
 import { PostSchema } from "../validations/post-schema.js";
+import { ValidationService } from "../services/validation.service.js";
+import { FileService } from "../services/file.service.js";
+import { ValidationExternalService } from "../services/validation-external.service.js";
+import { ValidationExternalFetchService } from "../services/validation-external-fetch.service.js";
+import { ValidationExternalReqService } from "../services/validation-external-req.service.js";
 
 type ExpressServerOptions = Pick<
   Server,
@@ -13,6 +18,8 @@ type ExpressServerOptions = Pick<
 
 export interface Configuration {
   // TO_CHANGE: add your needed configuration parameters
+  readonly validationExternalService: ValidationExternalService,
+  readonly validationService: ValidationService 
   readonly postSchema: PostSchema;
   readonly port: number;
   readonly expressServerOptions: ExpressServerOptions;
@@ -23,6 +30,11 @@ export const readAppConfiguration = (file: string): Configuration => {
     fs.readFileSync(file, "utf-8")
   );*/
   const configuration: Configuration = {
+    validationExternalService: new ValidationExternalService(
+      new ValidationExternalFetchService(),
+      new ValidationExternalReqService()
+    ),
+    validationService: new ValidationService(new FileService()),
     postSchema: new PostSchema(),
     expressServerOptions: {
       headersTimeout: 10000,
