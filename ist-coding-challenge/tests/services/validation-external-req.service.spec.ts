@@ -14,7 +14,7 @@ describe('validation external with request service', () => {
 
 
 
-    it.skip('external api test validation Vat AT Valid', async () => {
+    it('external api test validation Vat AT Valid', async () => {
         const payload: CheckVatRequest = { countryCode: 'AT', vatNumber: 'U62060511' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -28,7 +28,7 @@ describe('validation external with request service', () => {
 
 
     }, timeOut)
-    it.skip('external api test validation Vat AT Valid II', async () => {
+    it('external api test validation Vat AT Valid II', async () => {
         const payload: CheckVatRequest = { countryCode: 'AT', vatNumber: 'U66889218' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);

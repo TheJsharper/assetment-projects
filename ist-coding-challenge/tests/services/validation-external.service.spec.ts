@@ -12,7 +12,7 @@ describe('validation external with fetch or request service', () => {
         validationExternalService = new ValidationExternalService(new ValidationExternalFetchService(), new ValidationExternalReqService());
     })
 
-    it.skip('external api test validation Vat AT Valid', async () => {
+    it('external api test validation Vat AT Valid', async () => {
         
         const payload: CheckVatRequest = { countryCode: 'AT', vatNumber: 'U62060511' }
 
