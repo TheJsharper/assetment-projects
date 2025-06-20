@@ -17,5 +17,12 @@ export default function createApp(configuration: Configuration): {
 
   const router = DummyRouter(configuration);
   app.use("/", router);
+  app.get("/", (req, res)=> {
+    res.json({
+      "ok": true,
+      msg: ' GET Hello world'
+    })
+  })
+  
   return { app, router };
 }

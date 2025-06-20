@@ -12,6 +12,17 @@ const router = (configuration: Configuration): Router => {
     strict: true,
   });
   dummyController = new DummyController(configuration); // You can make the controller a const if it doesn't need the configuration
+  expressRouter.post(
+    "/",
+    async (req, res, next) => {
+      try {
+        const handler = await dummyController.postRequestHandler();
+        return handler(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
   return expressRouter;
 };
 export default router;
