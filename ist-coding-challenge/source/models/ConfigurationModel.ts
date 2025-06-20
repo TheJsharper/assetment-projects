@@ -1,6 +1,5 @@
 import { Server } from "http";
-import fs from "fs";
-import { PostSchema } from "../validations/post-schema";
+import { PostSchema } from "../validations/post-schema.js";
 
 type ExpressServerOptions = Pick<
   Server,
@@ -38,3 +37,4 @@ export const readAppConfiguration = (file: string): Configuration => {
 
   return configuration;
 };
+

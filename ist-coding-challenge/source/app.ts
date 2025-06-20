@@ -3,18 +3,21 @@ import {
   Configuration,
   readAppConfiguration,
 } from "./models/ConfigurationModel.js";
-import createApp from "./server.js";
+import { Server as AppServer } from "./server.js";
 
 const configurationFile = "";
 
 const configuration: Configuration = readAppConfiguration(configurationFile);
 
-const server: Server = createApp(configuration).app.listen(
+/*const server: Server = createApp(configuration).app.listen(
   configuration.port,
   () => {
     console.log({ description: "START" });
   }
-);
+);*/
+const appServer: AppServer = new AppServer(configuration);
+appServer.createApp();
+const server: Server = appServer.listen();
 
 server.keepAliveTimeout = configuration.expressServerOptions.keepAliveTimeout;
 server.maxHeadersCount = configuration.expressServerOptions.maxHeadersCount;
