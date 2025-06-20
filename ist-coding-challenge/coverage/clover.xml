@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1750412352794" clover="3.2.0">
-  <project timestamp="1750412352795" name="All files">
+<coverage generated="1750419472813" clover="3.2.0">
+  <project timestamp="1750419472813" name="All files">
     <metrics statements="68" coveredstatements="37" conditionals="16" coveredconditionals="12" methods="22" coveredmethods="7" elements="106" coveredelements="56" complexity="0" loc="68" ncloc="68" packages="1" files="5" classes="5"/>
     <file name="file.service.ts" path="C:\Users\devloop\Desktop\challange-projects\assetment-projects\ist-coding-challenge\source\services\file.service.ts">
       <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>

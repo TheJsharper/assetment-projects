@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import DummyController from "../controllers/DummyController.js"; // TO_CHANGE: naming
 import { Configuration } from "../models/ConfigurationModel.js";
+import validVatValidator from "../middlewares/validate-post-request.middleware.js";
 
 let dummyController: DummyController; // TO_CHANGE: naming
 
@@ -13,11 +14,11 @@ const router = (configuration: Configuration): Router => {
   });
   dummyController = new DummyController(configuration); // You can make the controller a const if it doesn't need the configuration
   expressRouter.post(
-    "/",
+    "/",validVatValidator(configuration.postSchema.getVatValidValidation()),
     async (req, res, next) => {
       try {
         const handler = await dummyController.postRequestHandler();
-        return handler(req, res, next);
+        return handler( req, res, next);
       } catch (err) {
         next(err);
       }
