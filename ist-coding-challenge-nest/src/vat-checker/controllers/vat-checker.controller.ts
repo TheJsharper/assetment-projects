@@ -102,8 +102,7 @@ export class VatCheckerController {
             }
             return { validated: false, details: "Invalid country code or VAT number." };
         } catch (error) {
-            console.log('Validation error:=====>', error);
-            return  Promise.reject(new Error(`Validation failed:==>||||===`));
+            return  Promise.reject({ validated: false, details: new Error(`Validation failed: ${error.message}`) });
         }
     }
 }

@@ -37,15 +37,22 @@ describe('Vat Checker Controller Unit test', () => {
     });
 
     describe('postValidationVat', () => {
-        it('should validate VAT number successfully', async () => {
+        it('should validate VAT number Invalid VAT number: 123456789 for country code: DE', async () => {
             const vatData = {
                 countryCode: 'DE',
                 vat: '123456789'
             };
 
-            const result = await vatCheckerController.postValidationVat({ body: vatData });
+            expect(async () => {
+                try {
+                    const result = await vatCheckerController.postValidationVat({ body: vatData });
+                    return result;
+                }catch (error) {
+                    throw (error as { validated: boolean; details: string }).details;
+                }
+            }).rejects.toThrow('Validation failed: Invalid VAT number: 123456789 for country code: DE');
 
-            expect(result).toBeDefined();
+           
         });
 
         it('should handle empty VAT data', async () => {
@@ -54,8 +61,12 @@ describe('Vat Checker Controller Unit test', () => {
                 vat: ''
             };
             await expect(async () => {
-                await vatCheckerController.postValidationVat({ body: vatData });
-            }).rejects.toThrow();
+                try {
+                    await vatCheckerController.postValidationVat({ body: vatData });
+                } catch (error) {
+                    throw (error as { validated: boolean; details: string }).details;
+                }
+            }).rejects.toThrow('Validation failed: Country code is required for validation.');
         });
 
         it('should handle invalid country code format', async () => {
@@ -66,7 +77,7 @@ describe('Vat Checker Controller Unit test', () => {
 
             await expect(vatCheckerController.postValidationVat({ body: vatData }))
                 .rejects
-                .toThrow();
+                .toThrow('Validation failed: Invalid country code or VAT number.');
         });
     });
 });
