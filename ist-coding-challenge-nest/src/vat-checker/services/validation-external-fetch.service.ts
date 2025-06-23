@@ -25,16 +25,11 @@ export class ValidationExternalFetchService {
 
     public static readonly path = 'https://ec.europa.eu/taxation_customs/vies/rest-api//check-vat-number';
 
-   /* async validateVat(req: CheckVatRequest): Promise<Partial<CheckVatResponse>> {
-
-        if ('fetch' in global) {
-            return this.validateVatFetch(req);
-        } else {
-            //  return this.validateVatRequest(req);
-            return Promise.resolve({});
-        }
-    }*/
-
+    /**
+     * Validates a VAT number using the external fetch API.
+     * @param req - The request object containing the country code and VAT number.
+     * @returns A promise that resolves to a partial CheckVatResponse.
+     */
     async validateVatFetch(req: CheckVatRequest): Promise<Partial<CheckVatResponse>> {
 
         const init: RequestInit = {
