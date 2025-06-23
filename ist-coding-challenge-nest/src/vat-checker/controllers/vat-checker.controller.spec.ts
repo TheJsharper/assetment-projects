@@ -69,15 +69,33 @@ describe('Vat Checker Controller Unit test', () => {
             }).rejects.toThrow('Validation failed: Country code is required for validation.');
         });
 
-        it('should handle invalid country code format', async () => {
+        it('should handle invalid country code format Validation failed: Invalid country code: DEU', async () => {
             const vatData = {
                 countryCode: 'DEU',
                 vat: '123456789'
             };
 
-            await expect(vatCheckerController.postValidationVat({ body: vatData }))
-                .rejects
-                .toThrow('Validation failed: Invalid country code or VAT number.');
+            await expect(async () => {
+                try {
+                    await vatCheckerController.postValidationVat({ body: vatData });
+                } catch (error) {
+                    throw (error as { validated: boolean; details: string }).details;
+                }
+            }) .rejects.toThrow('Validation failed: Invalid country code: DEU');
+        });
+        it('should handle invalid VAT number format', async () => {
+            const vatData = {
+                countryCode: 'DE',
+                vat: '1234'
+            };
+
+            await expect(async () => {
+                try {
+                    await vatCheckerController.postValidationVat({ body: vatData });
+                } catch (error) {
+                    throw (error as { validated: boolean; details: string }).details;
+                }
+            }).rejects.toThrow('Validation failed: Invalid VAT number: 1234 for country code: DE');
         });
     });
 });

@@ -95,14 +95,17 @@ export class VatCheckerController {
                     await this.validationExternalService.validateVat({ countryCode: validationRequest.countryCode, vatNumber: validationRequest.vat });
                     if (listFileCountry.validated) {
                         return Promise.resolve({ validated: true, details: "VAT number is valid for the given country code." });
+                    } else {
+                        return Promise.resolve({ validated: false, details: `Invalid VAT number: ${validationRequest.vat} for country code: ${validationRequest.countryCode}` });
                     }
                 } catch (error) {
                     return Promise.reject({ validated: false, details: `External validation failed: ${error.message}` });
                 }
+            } else {
+                return Promise.resolve({ validated: false, details: "Invalid country code or VAT number." });
             }
-            return { validated: false, details: "Invalid country code or VAT number." };
         } catch (error) {
-            return  Promise.reject({ validated: false, details: new Error(`Validation failed: ${error.message}`) });
+            return Promise.reject({ validated: false, details: new Error(`Validation failed: ${error.message}`) });
         }
     }
 }
