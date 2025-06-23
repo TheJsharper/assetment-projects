@@ -25,7 +25,7 @@ describe('validation external with fetch or request service', () => {
         expect(validate.valid).toBe(true);
 
     })
-    it.skip('external api test validation Vat AT Valid', async () => {
+    it('external api test validation Vat AT Valid', async () => {
 
         delete (global as any)?.fetch;
 
@@ -41,7 +41,7 @@ describe('validation external with fetch or request service', () => {
 
     })
 
-    it.skip('if fetch-api is implemented by nodejs version', async () => {
+    it('if fetch-api is implemented by nodejs version', async () => {
 
         if ('fetch' in global) {
 
