@@ -6,6 +6,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
     "resolveJsonModule": true,
     "strict": true,
     "outDir": "./build",
