@@ -42,7 +42,7 @@ describe('validation external with request service', () => {
 
 
     }, timeOut)
-    it.skip('external api test validation Vat AT Valid III', async () => {
+    it('external api test validation Vat AT Valid III', async () => {
         const payload: CheckVatRequest = { countryCode: 'AT', vatNumber: 'U52614407' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -56,7 +56,7 @@ describe('validation external with request service', () => {
 
 
     })
-    it.skip('external api test validation Vat AT Valid IV', async () => {
+    it('external api test validation Vat AT Valid IV', async () => {
         const payload: CheckVatRequest = { countryCode: 'AT', vatNumber: 'U52614407' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -70,7 +70,7 @@ describe('validation external with request service', () => {
 
 
     })
-    it.skip('external api test validation Vat Germany DE Valid IV ', async () => {
+    it('external api test validation Vat Germany DE Valid IV ', async () => {
         const payload: CheckVatRequest = { countryCode: 'DE', vatNumber: '279448078' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -84,7 +84,7 @@ describe('validation external with request service', () => {
 
 
     }, timeOut)
-    it.skip('external api test validation Vat SPAIN Valid V ', async () => {
+    it('external api test validation Vat SPAIN Valid V ', async () => {
         const payload: CheckVatRequest = { countryCode: 'ES', vatNumber: 'B84570936' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -98,7 +98,7 @@ describe('validation external with request service', () => {
 
 
     }, timeOut)
-    it.skip('external api test validation Vat SPAIN Valid VI ', async () => {
+    it('external api test validation Vat SPAIN Valid VI ', async () => {
         const payload: CheckVatRequest = { countryCode: 'BE', vatNumber: '0411905847' }
 
         const validate: Partial<CheckVatResponse> = await validationExternalReqService.validateVatRequest(payload);
@@ -112,14 +112,14 @@ describe('validation external with request service', () => {
 
 
     }, timeOut)
-    it.skip('external api test validation error', async () => {
+    it('external api test validation error', async () => {
         const payload: CheckVatRequest = null as any
 
         await expect(validationExternalReqService.validateVatRequest(payload)).rejects.toThrow('Error passing payload')
 
     }, timeOut)
 
-    it.skip('external api test validation error', async () => {
+    it('external api test validation error', async () => {
         const payload: CheckVatRequest = { countryCode: 'BE', vatNumber: '0411905847' }
 
         jest.spyOn(validationExternalReqService, 'path', 'get').mockReturnValue("/taxation_customs/vies/rest-api//check-vat-number/non-existent" as any);

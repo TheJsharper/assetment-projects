@@ -18,12 +18,7 @@ export default function createApp(configuration: Configuration): {
 
   const router = DummyRouter(configuration);
   app.use("/", router);
-  app.get("/", (req, res) => {
-    res.json({
-      "ok": true,
-      msg: ' GET Hello world'
-    })
-  })
+
 
   return { app, router };
 }
@@ -49,10 +44,10 @@ export class Server {
 
     const router = DummyRouter(this.configuration);
     this.app.use("/", router);
-    this.app.get("/", (req, res) => {
+    this.app.get("/*", (req, res) => {
       res.json({
         "ok": true,
-        msg: ' GET Hello world'
+        msg: ' No support for this route'
       })
     })
 
@@ -60,7 +55,7 @@ export class Server {
   }
 
   listen(): http.Server {
-    return this._app.listen(this.configuration.port, () => console.log({ description: `STARTED AND SERVING PORT: ${this.configuration.port}`  }));
+    return this._app.listen(this.configuration.port, () => console.log({ description: `STARTED AND SERVING PORT: ${this.configuration.port}` }));
   }
 
 }
