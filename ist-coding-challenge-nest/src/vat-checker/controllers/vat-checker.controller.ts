@@ -1,19 +1,18 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, UsePipes } from "@nestjs/common";
 import { ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
-
-export interface VatValidatorDto{
-    countryCode:string;
-    vat:string;
-}
+import { ZodValidationPipe, } from "nestjs-zod";
+import { z } from 'zod';
+import { PostSchemaVatValidator } from "../validations/post-schema";
 
 
 @ApiTags('Vat Validation')
 @Controller('/')
-
 export class VatCheckerController {
 
 
+
     @Post('valid-vat/')
+    @UsePipes(new ZodValidationPipe(PostSchemaVatValidator))
     @ApiResponse({
         status: 200,
         description: 'if the vat number is correct',
@@ -56,7 +55,7 @@ export class VatCheckerController {
         }
 
     })
-    postValidationVat(@Body() vatValidatorDto: VatValidatorDto ): Promise<any> {
+    postValidationVat(@Body() vatValidatorDto: z.infer<typeof PostSchemaVatValidator>): Promise<any> {
         return Promise.resolve({});
     }
 }
