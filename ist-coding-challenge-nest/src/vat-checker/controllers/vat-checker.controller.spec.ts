@@ -5,6 +5,8 @@ import { ValidationExternalReqService } from "../services/validation-external-re
 import { ValidationExternalFetchService } from "../services/validation-external-fetch.service";
 import { FileService } from "../services/file.service";
 import { ValidationService } from "../services/validation.service";
+import { APP_PIPE } from "@nestjs/core";
+import { ZodValidationPipe } from "nestjs-zod";
 
 describe('Vat Checker Controller Unit test', () => {
     let vatCheckerController: VatCheckerController;
@@ -18,7 +20,11 @@ describe('Vat Checker Controller Unit test', () => {
                 ValidationExternalFetchService,
                 ValidationExternalReqService,
                 ValidationExternalService,
-                ValidationService
+                ValidationService,
+                {
+                    provide: APP_PIPE,
+                    useClass: ZodValidationPipe
+                }
             ]
         }).compile();
 
@@ -49,7 +55,7 @@ describe('Vat Checker Controller Unit test', () => {
 
             await expect(vatCheckerController.postValidationVat({ body: vatData }))
                 .rejects
-                .toThrow();
+                .toThrow('Validation failed (empty data)');
         });
 
         it('should handle invalid country code format', async () => {

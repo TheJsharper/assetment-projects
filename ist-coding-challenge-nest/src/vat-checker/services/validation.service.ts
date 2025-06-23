@@ -22,12 +22,12 @@ export class ValidationService {
             return Promise.reject(new Error("Country code is required for validation."));
         }
 
-        if (!requestValidation.vat ) {
+        if (!requestValidation.vat) {
             return Promise.reject(new Error("VAT number is required for validation."));
         }
 
         const countryCodes = await this.fileService.lodCountries();
-        
+
         if (!countryCodes || !Array.isArray(countryCodes)) {
             return Promise.reject(new Error("Country codes data is not available or invalid."));
         }
@@ -43,11 +43,8 @@ export class ValidationService {
         }
 
         const result = new RegExp(`${found.regex}`, 'g').test(requestValidation.vat);
-
-        if (!result){
-            console.log("=======>", result, requestValidation)
+        if (!result) {
             return Promise.reject(new Error(`Invalid VAT number: ${requestValidation.vat} for country code: ${requestValidation.countryCode}`));
-           // return  Promise.resolve({validated:false, details:`Invalid VAT number: ${requestValidation.vat} for country code: ${requestValidation.countryCode}`});
         }
 
 
@@ -57,5 +54,5 @@ export class ValidationService {
 
     }
 
-  
+
 }   
