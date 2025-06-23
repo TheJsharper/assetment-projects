@@ -4,14 +4,14 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { VatModule } from './../src/vat-checker/vat.module';
 import request from 'supertest';
 import { App } from "supertest/types";
-import { FileService } from "src/vat-checker/services/file.service.js";
-import { ValidationExternalFetchService } from "src/vat-checker/services/validation-external-fetch.service.js";
-import { ValidationExternalReqService } from "src/vat-checker/services/validation-external-req.service.js";
-import { ValidationExternalService } from "src/vat-checker/services/validation-external.service.js";
-import { ValidationService } from "src/vat-checker/services/validation.service.js";
+import { FileService } from "../src/vat-checker/services/file.service";
+import { ValidationExternalFetchService } from "../src/vat-checker/services/validation-external-fetch.service";
+import { ValidationExternalReqService } from "../src/vat-checker/services/validation-external-req.service";
+import { ValidationExternalService } from "../src/vat-checker/services/validation-external.service";
+import { ValidationService } from "../src//vat-checker/services/validation.service";
 import { APP_PIPE } from "@nestjs/core";
 import { ZodValidationPipe } from "nestjs-zod";
-import { VatCheckerController } from "src/vat-checker/controllers/vat-checker.controller";
+import { VatCheckerController } from "../src/vat-checker/controllers/vat-checker.controller";
 
 describe('Server test suite', () => {
 
@@ -50,7 +50,7 @@ describe('Server test suite', () => {
                 vat: "12345678"
             }
         };
-        const res = await request(app.getHttpServer()).post(`/valid-vat/`)
+        const res = await request(app.getHttpServer()).post(`/valid-vat`)
             .send(paylaod)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
@@ -66,7 +66,7 @@ describe('Server test suite', () => {
                 vat: "123456789"
             }
         };
-        const res = await request(app.getHttpServer(),).post(`/valid-vat/`)
+        const res = await request(app.getHttpServer(),).post(`/valid-vat`)
             .send(paylaod)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
@@ -86,7 +86,7 @@ describe('Server test suite', () => {
                 vat: "12345678910112"
             }
         };
-        const res = await request(app.getHttpServer()).post(`/valid-vat/`)
+        const res = await request(app.getHttpServer()).post(`/valid-vat`)
             .send(paylaod)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
@@ -106,7 +106,7 @@ describe('Server test suite', () => {
                 vat: "12345678910112"
             }
         };
-        const res = await request(app.getHttpServer()).post(`/valid-vat/`)
+        const res = await request(app.getHttpServer()).post(`/valid-vat`)
             .send(paylaod)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
