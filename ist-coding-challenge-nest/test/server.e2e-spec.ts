@@ -1,9 +1,17 @@
 
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { AppModule } from "src/app.module";
+import { VatModule } from './../src/vat-checker/vat.module';
 import request from 'supertest';
 import { App } from "supertest/types";
+import { FileService } from "src/vat-checker/services/file.service.js";
+import { ValidationExternalFetchService } from "src/vat-checker/services/validation-external-fetch.service.js";
+import { ValidationExternalReqService } from "src/vat-checker/services/validation-external-req.service.js";
+import { ValidationExternalService } from "src/vat-checker/services/validation-external.service.js";
+import { ValidationService } from "src/vat-checker/services/validation.service.js";
+import { APP_PIPE } from "@nestjs/core";
+import { ZodValidationPipe } from "nestjs-zod";
+import { VatCheckerController } from "src/vat-checker/controllers/vat-checker.controller";
 
 describe('Server test suite', () => {
 
@@ -11,7 +19,19 @@ describe('Server test suite', () => {
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
-            imports: [AppModule],
+            imports: [VatModule],
+            providers: [
+                FileService,
+                ValidationExternalFetchService,
+                ValidationExternalReqService,
+                ValidationExternalService,
+                ValidationService,
+                {
+                    provide: APP_PIPE,
+                    useClass: ZodValidationPipe
+                }
+            ],
+            controllers: [VatCheckerController]
         }).compile();
 
         app = moduleFixture.createNestApplication();
