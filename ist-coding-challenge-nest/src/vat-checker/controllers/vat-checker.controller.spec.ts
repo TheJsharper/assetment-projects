@@ -53,8 +53,6 @@ describe('Vat Checker Controller Unit test', () => {
                 countryCode: '',
                 vat: ''
             };
-            //const result = await vatCheckerController.postValidationVat({ body: vatData });
-            //expect(result).toBeDefined();
             await expect(async () => {
                 await vatCheckerController.postValidationVat({ body: vatData });
             }).rejects.toThrow();
