@@ -7,6 +7,7 @@ import { ValidationExternalReqService } from "../services/validation-external-re
 import { ValidationExternalService } from "../services/validation-external.service";
 import { ValidationService } from "../services/validation.service";
 import { VatCheckerController } from "./vat-checker.controller";
+import { createRequest, createResponse } from 'node-mocks-http';
 
 describe('Vat Checker Controller Unit test', () => {
     let vatCheckerController: VatCheckerController;
@@ -42,27 +43,25 @@ describe('Vat Checker Controller Unit test', () => {
     });
 
     describe('postValidationVat', () => {
+
         it('should validate VAT number Invalid VAT number: 123456789 for country code: DE', async () => {
             const vatData = {
                 countryCode: 'DE',
                 vat: '123456789'
             };
-            let responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
 
+            const res = createResponse();
             expect(async () => {
-                try {
-                    const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
-                    return result;
-                } catch (error) {
-                    throw (error as { validated: boolean; details: string }).details;
-                }
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, res);
+
+                expect(res.statusCode).toBe(400);
+
+                expect(res._getJSONData()).toEqual({
+                    validated: false,
+                    details: `Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`
+                });
+                throw new Error(`Validation failed: Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`);
+
             }).rejects.toThrow('Validation failed: Invalid VAT number: 123456789 for country code: DE');
 
 
@@ -73,20 +72,19 @@ describe('Vat Checker Controller Unit test', () => {
                 countryCode: '',
                 vat: ''
             };
-            let responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
+            const response = createResponse();
             await expect(async () => {
-                try {
-                    await vatCheckerController.postValidationVat({ body: vatData }, response);
-                } catch (error) {
-                    throw (error as { validated: boolean; details: string }).details;
-                }
+
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+                expect(response.statusCode).toBe(400);
+
+                expect(response._getJSONData()).toEqual({
+                    validated: false,
+                    details: 'Country code is required for validation.'
+                });
+                throw new Error('Validation failed: Country code is required for validation.');
+
             }).rejects.toThrow('Validation failed: Country code is required for validation.');
         });
 
@@ -96,20 +94,17 @@ describe('Vat Checker Controller Unit test', () => {
                 vat: '123456789'
             };
 
-            let responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
+            const response = createResponse();
             await expect(async () => {
-                try {
-                    await vatCheckerController.postValidationVat({ body: vatData }, response);
-                } catch (error) {
-                    throw (error as { validated: boolean; details: string }).details;
-                }
+
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+                expect(response.statusCode).toBe(400);
+                expect(response._getJSONData()).toEqual({
+                    validated: false,
+                    details: 'Invalid country code: DEU'
+                }); 
+                throw new Error('Validation failed: Invalid country code: DEU');
+
             }).rejects.toThrow('Validation failed: Invalid country code: DEU');
         });
         it('should handle invalid VAT number format', async () => {
@@ -118,21 +113,17 @@ describe('Vat Checker Controller Unit test', () => {
                 vat: '1234'
             };
 
-            let responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
+            const response = createResponse();
 
             await expect(async () => {
-                try {
-                    await vatCheckerController.postValidationVat({ body: vatData }, response);
-                } catch (error) {
-                    throw (error as { validated: boolean; details: string }).details;
-                }
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+                expect(response.statusCode).toBe(400);
+                expect(response._getJSONData()).toEqual({   
+                    validated: false,
+                    details: `Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`
+                }); 
+                throw new Error(`Validation failed: Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`);
+
             }).rejects.toThrow('Validation failed: Invalid VAT number: 1234 for country code: DE');
         });
     });
@@ -151,21 +142,21 @@ describe('Vat Checker Controller Unit test', () => {
             const validationExternalService = app.get<ValidationExternalService>(ValidationExternalService);
 
             jest.spyOn(validationExternalService, 'validateVat').mockRejectedValue(new Error('Invalid VAT number: 123456789 for country code: DE'));
-            const responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
+
+            const response = createResponse();
 
             await expect(async () => {
-                try {
-                    await vatCheckerController.postValidationVat({ body: vatData }, response);
-                } catch (error) {
-                    throw new Error(`External validation failed: ${error.details}`);
-                }
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+                
+                expect(response.statusCode).toBe(500);
+                
+                expect(response._getJSONData()).toEqual({
+                    validated: false,
+                    details: 'External validation failed: Invalid VAT number: 123456789 for country code: DE'
+                });
+
+                throw new Error('External validation failed: Invalid VAT number: 123456789 for country code: DE');
+
             }).rejects.toThrow('External validation failed: Invalid VAT number: 123456789 for country code: DE');
         });
 
@@ -181,19 +172,18 @@ describe('Vat Checker Controller Unit test', () => {
             });
 
             const validationExternalService = app.get<ValidationExternalService>(ValidationExternalService);
-            let responseObject = {
-                status: 400,
-                message: 'Hello World!'
-            };
-            const response = {
-                status: jest.fn().mockImplementation().mockReturnValue(400),
-                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-            } as any;
+            
+            const response = createResponse();
+
+
 
             jest.spyOn(validationExternalService, 'validateVat').mockResolvedValue({ valid: true });
 
             const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
-            expect(result).toEqual({
+            
+            expect(response.statusCode).toBe(200);
+            
+            expect(response._getJSONData()).toEqual({
                 validated: true,
                 details: 'VAT number is valid for the given country code.'
             });
