@@ -43,6 +43,7 @@ export class ValidationService {
         }
 
         const result = new RegExp(`${found.regex}`, 'g').test(requestValidation.vat);
+        
         if (!result) {
             return Promise.reject(new Error(`Invalid VAT number: ${requestValidation.vat} for country code: ${requestValidation.countryCode}`));
         }

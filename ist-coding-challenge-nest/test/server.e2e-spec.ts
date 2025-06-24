@@ -47,7 +47,7 @@ describe('Server test suite', () => {
         const paylaod = {
             body: {
                 countryCode: "DE",
-                vat: "12345678"
+                vat: "DE123456789"
             }
         };
         const res = await request(app.getHttpServer()).post(`/valid-vat`)
@@ -56,6 +56,10 @@ describe('Server test suite', () => {
             .set('Content-Type', 'application/json')
             .expect("Content-Type", /json/)
             .expect(200);
+        expect(res.body).toMatchObject<{ validated: boolean, details: string }>({
+            validated: true,
+            details: 'VAT number is valid for the given country code.'
+        });
 
     }, 10000)
     it('simple server post handler /valid-vat/ testing invalid countryCode length payload', async () => {
@@ -71,11 +75,14 @@ describe('Server test suite', () => {
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .expect("Content-Type", /json/)
-            .expect(400)
-        expect(res.body).toMatchObject<{ error: string, details: Array<{ message: string }> }>({
-            error: 'Invalid data',
-            details: [{ message: 'contryCode must be 2 characters length' }]
-        });
+            .expect(400);
+        expect(() => {
+            throw new Error(res.body.errors[0].message);
+
+        }).toThrow('contryCode must be 2 characters length');
+
+
+
 
     })
     it('simple server post handler /valid-vat/ testing invalid vat length payload', async () => {
@@ -92,10 +99,9 @@ describe('Server test suite', () => {
             .set('Content-Type', 'application/json')
             .expect("Content-Type", /json/)
             .expect(400)
-        expect(res.body).toMatchObject<{ error: string, details: Array<{ message: string }> }>({
-            error: 'Invalid data',
-            details: [{ message: 'vat must be between 8 to 12 length' }]
-        });
+        expect(() => {
+            throw new Error(res.body.errors[0].message);
+        }).toThrow('vat must be between 8 to 12 length');
 
     })
     it('simple server post handler /valid-vat/ testing invalid vat length payload and countryCode length payload', async () => {
@@ -112,10 +118,12 @@ describe('Server test suite', () => {
             .set('Content-Type', 'application/json')
             .expect("Content-Type", /json/)
             .expect(400)
-        expect(res.body).toMatchObject<{ error: string, details: Array<{ message: string }> }>({
-            error: 'Invalid data',
-            details: [{ message: 'contryCode must be 2 characters length' }, { message: 'vat must be between 8 to 12 length' }]
-        });
+        expect(() => {
+            throw new Error(res.body.errors[0].message);
+        }).toThrow('contryCode must be 2 characters length');
+        expect(() => {
+            throw new Error(res.body.errors[1].message);
+        }).toThrow('vat must be between 8 to 12 length');
 
     })
 

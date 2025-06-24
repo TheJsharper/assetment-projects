@@ -1,12 +1,12 @@
-import { TestingModule, Test } from "@nestjs/testing"
-import { VatCheckerController } from "./vat-checker.controller";
-import { ValidationExternalService } from "../services/validation-external.service";
-import { ValidationExternalReqService } from "../services/validation-external-req.service";
-import { ValidationExternalFetchService } from "../services/validation-external-fetch.service";
-import { FileService } from "../services/file.service";
-import { ValidationService } from "../services/validation.service";
 import { APP_PIPE } from "@nestjs/core";
-import { validate, ZodValidationPipe } from "nestjs-zod";
+import { Test, TestingModule } from "@nestjs/testing";
+import { ZodValidationPipe } from "nestjs-zod";
+import { FileService } from "../services/file.service";
+import { ValidationExternalFetchService } from "../services/validation-external-fetch.service";
+import { ValidationExternalReqService } from "../services/validation-external-req.service";
+import { ValidationExternalService } from "../services/validation-external.service";
+import { ValidationService } from "../services/validation.service";
+import { VatCheckerController } from "./vat-checker.controller";
 
 describe('Vat Checker Controller Unit test', () => {
     let vatCheckerController: VatCheckerController;
@@ -47,10 +47,18 @@ describe('Vat Checker Controller Unit test', () => {
                 countryCode: 'DE',
                 vat: '123456789'
             };
+            let responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
 
             expect(async () => {
                 try {
-                    const result = await vatCheckerController.postValidationVat({ body: vatData });
+                    const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
                     return result;
                 } catch (error) {
                     throw (error as { validated: boolean; details: string }).details;
@@ -65,9 +73,17 @@ describe('Vat Checker Controller Unit test', () => {
                 countryCode: '',
                 vat: ''
             };
+            let responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
             await expect(async () => {
                 try {
-                    await vatCheckerController.postValidationVat({ body: vatData });
+                    await vatCheckerController.postValidationVat({ body: vatData }, response);
                 } catch (error) {
                     throw (error as { validated: boolean; details: string }).details;
                 }
@@ -80,9 +96,17 @@ describe('Vat Checker Controller Unit test', () => {
                 vat: '123456789'
             };
 
+            let responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
             await expect(async () => {
                 try {
-                    await vatCheckerController.postValidationVat({ body: vatData });
+                    await vatCheckerController.postValidationVat({ body: vatData }, response);
                 } catch (error) {
                     throw (error as { validated: boolean; details: string }).details;
                 }
@@ -94,9 +118,18 @@ describe('Vat Checker Controller Unit test', () => {
                 vat: '1234'
             };
 
+            let responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
+
             await expect(async () => {
                 try {
-                    await vatCheckerController.postValidationVat({ body: vatData });
+                    await vatCheckerController.postValidationVat({ body: vatData }, response);
                 } catch (error) {
                     throw (error as { validated: boolean; details: string }).details;
                 }
@@ -118,10 +151,18 @@ describe('Vat Checker Controller Unit test', () => {
             const validationExternalService = app.get<ValidationExternalService>(ValidationExternalService);
 
             jest.spyOn(validationExternalService, 'validateVat').mockRejectedValue(new Error('Invalid VAT number: 123456789 for country code: DE'));
+            const responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
 
             await expect(async () => {
                 try {
-                    await vatCheckerController.postValidationVat({ body: vatData });
+                    await vatCheckerController.postValidationVat({ body: vatData }, response);
                 } catch (error) {
                     throw new Error(`External validation failed: ${error.details}`);
                 }
@@ -140,10 +181,18 @@ describe('Vat Checker Controller Unit test', () => {
             });
 
             const validationExternalService = app.get<ValidationExternalService>(ValidationExternalService);
+            let responseObject = {
+                status: 400,
+                message: 'Hello World!'
+            };
+            const response = {
+                status: jest.fn().mockImplementation().mockReturnValue(400),
+                json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+            } as any;
 
             jest.spyOn(validationExternalService, 'validateVat').mockResolvedValue({ valid: true });
 
-            const result = await vatCheckerController.postValidationVat({ body: vatData });
+            const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
             expect(result).toEqual({
                 validated: true,
                 details: 'VAT number is valid for the given country code.'

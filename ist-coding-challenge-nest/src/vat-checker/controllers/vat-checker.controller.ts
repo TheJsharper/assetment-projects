@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UsePipes } from "@nestjs/common";
+import { Body, Controller, Post, Res, UsePipes } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ZodValidationPipe, } from "nestjs-zod";
 import { z } from 'zod';
 import { ValidationExternalService } from "../services/validation-external.service";
 import { RequestValidation, ValidationService } from "../services/validation.service";
 import { PostSchemaVatValidator } from "../validations/post-schema";
+import { Response } from "express";
 
 
 @ApiTags('Vat Validation')
@@ -79,7 +80,7 @@ export class VatCheckerController {
         }
 
     })
-    async postValidationVat(@Body() vatValidatorDto: z.infer<typeof PostSchemaVatValidator>): Promise<{ validated: boolean, details: string }> {
+    async postValidationVat(@Body() vatValidatorDto: z.infer<typeof PostSchemaVatValidator>, @Res() response: Response): Promise<Response<any, Record<string, any>>> {
 
 
         const validationRequest: RequestValidation = {
@@ -94,18 +95,18 @@ export class VatCheckerController {
                 try {
                     await this.validationExternalService.validateVat({ countryCode: validationRequest.countryCode, vatNumber: validationRequest.vat });
                     if (listFileCountry.validated) {
-                        return Promise.resolve({ validated: true, details: "VAT number is valid for the given country code." });
+                        return response.status(200).json({ validated: true, details: "VAT number is valid for the given country code." });
                     } else {
-                        return Promise.resolve({ validated: false, details: `Invalid VAT number: ${validationRequest.vat} for country code: ${validationRequest.countryCode}` });
+                        return response.status(400).json({ validated: false, details: `Invalid VAT number: ${validationRequest.vat} for country code: ${validationRequest.countryCode}` });
                     }
                 } catch (error) {
-                    return Promise.reject({ validated: false, details: `External validation failed: ${error.message}` });
+                    return response.status(500).json({ validated: false, details: `External validation failed: ${error.message}` });
                 }
             } else {
-                return Promise.resolve({ validated: false, details: "Invalid country code or VAT number." });
+                return response.status(400).json({ validated: false, details: "Invalid country code or VAT number." });
             }
         } catch (error) {
-            return Promise.reject({ validated: false, details: new Error(`Validation failed: ${error.message}`) });
+            return response.status(400).json({ validated: false, details: `Validation failed: ${error.message}` });
         }
     }
 }
