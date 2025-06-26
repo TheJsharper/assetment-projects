@@ -1,6 +1,6 @@
 import { APP_PIPE } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
-import { ZodValidationPipe } from "nestjs-zod";
+import { validate, ZodValidationPipe } from "nestjs-zod";
 import { createResponse } from 'node-mocks-http';
 import { FileService } from "../services/file.service";
 import { ValidationExternalFetchService } from "../services/validation-external-fetch.service";
@@ -98,11 +98,13 @@ describe('Vat Checker Controller Unit test', () => {
             await expect(async () => {
 
                 const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
                 expect(response.statusCode).toBe(400);
+
                 expect(response._getJSONData()).toEqual({
                     validated: false,
                     details: 'Invalid country code: DEU'
-                }); 
+                });
                 throw new Error('Validation failed: Invalid country code: DEU');
 
             }).rejects.toThrow('Validation failed: Invalid country code: DEU');
@@ -117,11 +119,13 @@ describe('Vat Checker Controller Unit test', () => {
 
             await expect(async () => {
                 const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
                 expect(response.statusCode).toBe(400);
-                expect(response._getJSONData()).toEqual({   
+
+                expect(response._getJSONData()).toEqual({
                     validated: false,
                     details: `Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`
-                }); 
+                });
                 throw new Error(`Validation failed: Invalid VAT number: ${vatData.vat} for country code: ${vatData.countryCode}`);
 
             }).rejects.toThrow('Validation failed: Invalid VAT number: 1234 for country code: DE');
@@ -147,9 +151,9 @@ describe('Vat Checker Controller Unit test', () => {
 
             await expect(async () => {
                 const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
-                
+
                 expect(response.statusCode).toBe(500);
-                
+
                 expect(response._getJSONData()).toEqual({
                     validated: false,
                     details: 'External validation failed: Invalid VAT number: 123456789 for country code: DE'
@@ -161,10 +165,12 @@ describe('Vat Checker Controller Unit test', () => {
         });
 
         it('should validate successfully when external service confirms valid VAT', async () => {
+
             const vatData = {
                 countryCode: 'DE',
                 vat: '123456789'
             };
+
 
             jest.spyOn(validationService, 'isValidCountryCode').mockResolvedValue({
                 validated: true,
@@ -172,20 +178,135 @@ describe('Vat Checker Controller Unit test', () => {
             });
 
             const validationExternalService = app.get<ValidationExternalService>(ValidationExternalService);
-            
+
             const response = createResponse();
 
 
 
             jest.spyOn(validationExternalService, 'validateVat').mockResolvedValue({ valid: true });
 
+
             const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
-            
+
+
             expect(response.statusCode).toBe(200);
-            
+
             expect(response._getJSONData()).toEqual({
                 validated: true,
                 details: 'VAT number is valid for the given country code.'
+            });
+        });
+
+        it('should handle external validation with valid VAT number', async () => {
+            const vatData = {
+                countryCode: 'AT',
+                vat: 'U62060511'
+            };
+
+            const expectedResponse = {
+                valid: true,
+                details: 'VAT number is valid for the given country code.'
+            };
+
+
+            const response = createResponse();
+
+            const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+            expect(result.statusCode).toBe(200);
+
+            expect(response.statusCode).toBe(200);
+
+            expect(response._getJSONData()).toEqual(expectedResponse);
+        });
+
+        it('should handle external validation with valid VAT number II', async () => {
+            const vatData = {
+                countryCode: 'AT',
+                vat: 'U66889218'
+            };
+
+            jest.spyOn(validationService, 'isValidCountryCode').mockResolvedValue({
+                validated: true,
+                details: 'Valid country code'
+            });
+
+            const expectedResponse = {
+                valid: true,
+                details: 'VAT number is valid for the given country code.'
+            };
+
+
+            const response = createResponse();
+
+            const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+            expect(result.statusCode).toBe(200);
+
+            expect(response.statusCode).toBe(200);
+
+            expect(response._getJSONData()).toEqual(expectedResponse);
+        });
+
+        describe('Valid VAT numbers for different EU countries', () => {
+            it('should handle external validation with valid VAT number for Germany', async () => {
+                const vatData = {
+                    countryCode: 'DE',
+                    vat: 'DE279448078'
+                };
+
+                const expectedResponse = {
+                    validated: true,
+                    details: 'VAT number is valid for the given country code.'
+                };
+
+                const response = createResponse();
+
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+                expect(result.statusCode).toBe(200);
+                expect(response.statusCode).toBe(200);
+                expect(response._getJSONData()).toEqual(expectedResponse);
+            });
+
+            it('should handle external validation with valid VAT number for Spain', async () => {
+                const vatData = {
+                    countryCode: 'ES',
+                    vat: 'B84570936'
+                };
+
+                const expectedResponse = {
+                    validated: true,
+                    details: 'VAT number is valid for the given country code.'
+                };
+
+                const response = createResponse();
+
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+                expect(result.statusCode).toBe(200);
+                expect(response.statusCode).toBe(200);
+                expect(response._getJSONData()).toEqual(expectedResponse);
+            });
+
+            it('should handle external validation with valid VAT number for Belgium', async () => {
+                const vatData = {
+                    countryCode: 'BE',
+                    vat: 'BE0411905847'
+                };
+
+                const expectedResponse = {
+                    validated: true,
+                    details: 'VAT number is valid for the given country code.'
+                };
+
+                const response = createResponse();
+
+                const result = await vatCheckerController.postValidationVat({ body: vatData }, response);
+
+                expect(result.statusCode).toBe(200);
+                expect(response.statusCode).toBe(200);
+                expect(response._getJSONData()).toEqual(expectedResponse);
             });
         });
     });
